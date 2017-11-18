@@ -1,189 +1,714 @@
-## Unit 4 | Assignment - Pandas, Pandas, Pandas
 
-## Background
 
-The data dive continues!
+```python
+Heroes of Pymoli
+Observation 1. There are many more male players than female players.
+Observation 2. Some players made multiple purchases.
+Obsercation 3. 11 players didnot want to disclose their gender or marked it as other.
+```
 
-Now, it's time to take what you've learned about Python Pandas and apply it to new situations. For this assignment, you'll need to complete **1 of 2**  Data Challenges. Once again, it's your choice which you choose. Just be sure to give it your all -- as the skills you hone will become powerful tools in your data analytics tool belt.
 
-## Option 1: Heroes of Pymoli
+```python
+import pandas as pd
+import numpy as np
+import json
+```
 
-![Fantasy](Images/Fantasy.jpg)
 
-Congratulations! After a lot of hard work in the data munging mines, you've landed a job as Lead Analyst for an independent gaming company. You've been assigned the task of analyzing the data for their most recent fantasy game Heroes of Pymoli. 
+```python
+data_file_pd = pd.read_json('purchase_data.json')
+data_file_pd.head()
+```
 
-Like many others in its genre, the game is free-to-play, but players are encouraged to purchase optional items that enhance their playing experience. As a first task, the company would like you to generate a report that breaks down the game's purchasing data into meaningful insights.
 
-Your final report should include each of the following:
 
-**Player Count**
 
-* Total Number of Players
+<div>
+<style>
+    .dataframe thead tr:only-child th {
+        text-align: right;
+    }
 
-**Purchasing Analysis (Total)**
+    .dataframe thead th {
+        text-align: left;
+    }
 
-* Number of Unique Items
-* Average Purchase Price
-* Total Number of Purchases
-* Total Revenue
+    .dataframe tbody tr th {
+        vertical-align: top;
+    }
+</style>
+<table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th></th>
+      <th>Age</th>
+      <th>Gender</th>
+      <th>Item ID</th>
+      <th>Item Name</th>
+      <th>Price</th>
+      <th>SN</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>0</th>
+      <td>38</td>
+      <td>Male</td>
+      <td>165</td>
+      <td>Bone Crushing Silver Skewer</td>
+      <td>3.37</td>
+      <td>Aelalis34</td>
+    </tr>
+    <tr>
+      <th>1</th>
+      <td>21</td>
+      <td>Male</td>
+      <td>119</td>
+      <td>Stormbringer, Dark Blade of Ending Misery</td>
+      <td>2.32</td>
+      <td>Eolo46</td>
+    </tr>
+    <tr>
+      <th>2</th>
+      <td>34</td>
+      <td>Male</td>
+      <td>174</td>
+      <td>Primitive Blade</td>
+      <td>2.46</td>
+      <td>Assastnya25</td>
+    </tr>
+    <tr>
+      <th>3</th>
+      <td>21</td>
+      <td>Male</td>
+      <td>92</td>
+      <td>Final Critic</td>
+      <td>1.36</td>
+      <td>Pheusrical25</td>
+    </tr>
+    <tr>
+      <th>4</th>
+      <td>23</td>
+      <td>Male</td>
+      <td>63</td>
+      <td>Stormfury Mace</td>
+      <td>1.27</td>
+      <td>Aela59</td>
+    </tr>
+  </tbody>
+</table>
+</div>
 
-**Gender Demographics**
 
-* Percentage and Count of Male Players
-* Percentage and Count of Female Players
-* Percentage and Count of Other / Non-Disclosed
 
-**Purchasing Analysis (Gender)** 
 
-* The below each broken by gender
-  * Purchase Count
-  * Average Purchase Price
-  * Total Purchase Value
-  * Normalized Totals
+```python
+total_Players = data_file_pd["SN"].nunique()
+total_Players_DF = pd.DataFrame({"Total Players": [total_Players]})
+total_Players_DF = total_Players_DF[["Total Players"]]
 
-**Age Demographics**
+total_Players_DF = total_Players_DF.round(2)
+total_Players_DF
+```
 
-* The below each broken into bins of 4 years (i.e. &lt;10, 10-14, 15-19, etc.) 
-  * Purchase Count
-  * Average Purchase Price
-  * Total Purchase Value
-  * Normalized Totals
 
-**Top Spenders**
 
-* Identify the the top 5 spenders in the game by total purchase value, then list (in a table):
-  * SN
-  * Purchase Count
-  * Average Purchase Price
-  * Total Purchase Value
 
-**Most Popular Items**
+<div>
+<style>
+    .dataframe thead tr:only-child th {
+        text-align: right;
+    }
 
-* Identify the 5 most popular items by purchase count, then list (in a table):
-  * Item ID
-  * Item Name
-  * Purchase Count
-  * Item Price
-  * Total Purchase Value
+    .dataframe thead th {
+        text-align: left;
+    }
 
-**Most Profitable Items**
+    .dataframe tbody tr th {
+        vertical-align: top;
+    }
+</style>
+<table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th></th>
+      <th>Total Players</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>0</th>
+      <td>573</td>
+    </tr>
+  </tbody>
+</table>
+</div>
 
-* Identify the 5 most profitable items by total purchase value, then list (in a table):
-  * Item ID
-  * Item Name
-  * Purchase Count
-  * Item Price
-  * Total Purchase Value
 
-As final considerations:
 
-* Your script must work for both data-sets given.
-* You must use the Pandas Library and the Jupyter Notebook.
-* You must submit a link to your Jupyter Notebook with the viewable Data Frames. 
-* You must include an exported markdown version of your Notebook called  `README.md` in your GitHub repository.  
-* You must include a written description of three observable trends based on the data. 
-* See [Example Solution](HeroesOfPymoli/HeroesOfPymoli_Example.pdf) for a reference on expected format. 
 
-## Option 2: Academy of Py
+```python
+unique_Items = data_file_pd["Item ID"].nunique()
+unique_Items
+```
 
-![Education](Images/education.jpg)
 
-Well done! Having spent years analyzing financial records for big banks, you've finally scratched your idealistic itch and joined the education sector. In your latest role, you've become the Chief Data Scientist for your city's school district. In this capacity, you'll be helping the  school board and mayor make strategic decisions regarding future school budgets and priorities.
 
-As a first task, you've been asked to analyze the district-wide standardized test results. You'll be given access to every student's math and reading scores, as well as various information on the schools they attend. Your responsibility is to aggregate the data to and showcase obvious trends in school performance. 
 
-Your final report should include each of the following:
+    183
 
-**District Summary**
 
-* Create a high level snapshot (in table form) of the district's key metrics, including:
-  * Total Schools
-  * Total Students
-  * Total Budget
-  * Average Math Score
-  * Average Reading Score
-  * % Passing Math
-  * % Passing Reading
-  * Overall Passing Rate (Average of the above two)
 
-**School Summary**
 
-* Create an overview table that summarizes key metrics about each school, including:
-  * School Name
-  * School Type
-  * Total Students
-  * Total School Budget
-  * Per School Budget
-  * Average Math Score
-  * Average Reading Score
-  * % Passing Math
-  * % Passing Reading
-  * Overall Passing Rate (Average of the above two)
+```python
+avg_Price = data_file_pd["Price"].mean()
+avg_Price
+```
 
-**Top Performing Schools (By Passing Rate)**
 
-* Create a table that highlights the top 5 performing schools based on Overall Passing Rate. Include:
-  * School Name
-  * School Type
-  * Total Students
-  * Total School Budget
-  * Per School Budget
-  * Average Math Score
-  * Average Reading Score
-  * % Passing Math
-  * % Passing Reading
-  * Overall Passing Rate (Average of the above two)
 
-**Top Performing Schools (By Passing Rate)**
 
-* Create a table that highlights the bottom 5 performing schools based on Overall Passing Rate. Include all of the same metrics as above.
+    2.931192307692303
 
-**Math Scores by Grade**
 
-* Create a table that lists the average Math Score for students of each grade level (9th, 10th, 11th, 12th) at each school.
 
-**Reading Scores by Grade**
 
-* Create a table that lists the average Reading Score for students of each grade level (9th, 10th, 11th, 12th) at each school.
+```python
+number_Purchases = data_file_pd["Item Name"].count()
+number_Purchases
+```
 
-**Scores by School Spending**
 
-* Create a table that breaks down school performances based on average Spending Ranges (Per Student). Use 4 reasonable bins to group school spending. Include in the table each of the following:
-  * Average Math Score
-  * Average Reading Score
-  * % Passing Math
-  * % Passing Reading
-  * Overall Passing Rate (Average of the above two)
 
-**Scores by School Size**
 
-* Repeat the above breakdown, but this time group schools based on a reasonable approximation of school size (Small, Medium, Large).
+    780
 
-**Scores by School Type**
 
-* Repeat the above breakdown, but this time group schools based on school type (Charter vs. District).
 
-As final considerations:
 
-* Your script must work for both data-sets given.
-* You must use the Pandas Library and the Jupyter Notebook.
-* You must submit a link to your Jupyter Notebook with the viewable Data Frames. 
-* You must include an exported markdown version of your Notebook called  `README.md` in your GitHub repository.  
-* You must include a written description of three observable trends based on the data. 
-* See [Example Solution](PyCitySchools/PyCitySchools_Example.pdf) for a reference on the expected format. 
+```python
+total_Revenue = data_file_pd["Price"].sum()
+total_Revenue
+```
 
-## Hints and Considerations
 
-* These are challenging activities for a number of reasons. For one, these activities will require you to analyze thousands of records. Hacking through the data to look for obvious trends in Excel is just not a feasible option. The size of the data may seem daunting, but Python Pandas will allow you to efficiently parse through it. 
 
-* Second, these activities will also challenge you by requiring you to learn on your feet. Don't fool yourself into thinking: "I need to study Pandas more closely before diving in." Get the basic gist of the library and then _immediately_ get to work. When facing a daunting task, it's easy to think: "I'm just not ready to tackle it yet." But that's the surest way to never succeed. Learning to program requires one to constantly tinker, experiment, and learn on the fly. You are doing exactly the _right_ thing, if you find yourself constantly practicing Google-Fu and diving into documentation. There is just no way (or reason) to try and memorize it all. Online references are available for you to use when you need them. So use them!
 
-* Take each of these tasks one at a time. Begin your work, answering the basic questions: "How do I import the data?" "How do I convert the data into a DataFrame?" "How do I build the first table?" Don't get intimidated by the number of asks. Many of them are repetitive in nature with just a few tweaks. Be persistent and creative!
+    2286.3299999999963
 
-* Expect these exercises to take time! Don't get discouraged if you find yourself spending  hours initially with little progress. Force yourself to deal with the discomfort of not knowing and forge ahead. This exercise is likely to take between 15-30 hours of your time. Consider these hours an investment in your future!
 
-* As always, feel encouraged to work in groups and get help from your TAs and Instructor. Just remember, true success comes from mastery and _not_ a completed homework assignment. So challenge yourself to truly succeed!
 
-## Copyright
 
-Coding Boot Camp (C) 2016. All Rights Reserved.
+```python
+unique_Items = data_file_pd["Item ID"].nunique()
+avg_Price = data_file_pd["Price"].mean()
+number_Purchases = data_file_pd["Item Name"].count()
+total_Revenue = data_file_pd["Price"].sum()
+
+purchasing_Analysis_DF = pd.DataFrame({"Number of Unique Items": [unique_Items],
+                                      "Average Price": [avg_Price],
+                                      "Number of Purchases": [number_Purchases],
+                                      "Total Revenue": [total_Revenue]})
+
+purchasing_Analysis_DF = purchasing_Analysis_DF[["Number of Unique Items",
+                                                "Average Price",
+                                                "Number of Purchases",
+                                                "Total Revenue"]]
+
+purchasing_Analysis_DF = purchasing_Analysis_DF.round(2)
+purchasing_Analysis_DF
+```
+
+
+
+
+<div>
+<style>
+    .dataframe thead tr:only-child th {
+        text-align: right;
+    }
+
+    .dataframe thead th {
+        text-align: left;
+    }
+
+    .dataframe tbody tr th {
+        vertical-align: top;
+    }
+</style>
+<table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th></th>
+      <th>Number of Unique Items</th>
+      <th>Average Price</th>
+      <th>Number of Purchases</th>
+      <th>Total Revenue</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>0</th>
+      <td>183</td>
+      <td>2.93</td>
+      <td>780</td>
+      <td>2286.33</td>
+    </tr>
+  </tbody>
+</table>
+</div>
+
+
+
+
+```python
+avg_Price = data_file_pd["Price"].mean()
+avg_Price
+```
+
+
+
+
+    2.931192307692303
+
+
+
+
+```python
+gender_data_df = data_file_pd["Gender"].value_counts()
+gender_data_df
+```
+
+
+
+
+    Male                     633
+    Female                   136
+    Other / Non-Disclosed     11
+    Name: Gender, dtype: int64
+
+
+
+
+```python
+gender_Total = data_file_pd["Gender"].count()
+gender_Total
+```
+
+
+
+
+    780
+
+
+
+
+```python
+male_Count_df = data_file_pd.loc[data_file_pd["Gender"] == "Male"]
+male_Count_df.head()
+```
+
+
+
+
+<div>
+<style>
+    .dataframe thead tr:only-child th {
+        text-align: right;
+    }
+
+    .dataframe thead th {
+        text-align: left;
+    }
+
+    .dataframe tbody tr th {
+        vertical-align: top;
+    }
+</style>
+<table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th></th>
+      <th>Age</th>
+      <th>Gender</th>
+      <th>Item ID</th>
+      <th>Item Name</th>
+      <th>Price</th>
+      <th>SN</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>0</th>
+      <td>38</td>
+      <td>Male</td>
+      <td>165</td>
+      <td>Bone Crushing Silver Skewer</td>
+      <td>3.37</td>
+      <td>Aelalis34</td>
+    </tr>
+    <tr>
+      <th>1</th>
+      <td>21</td>
+      <td>Male</td>
+      <td>119</td>
+      <td>Stormbringer, Dark Blade of Ending Misery</td>
+      <td>2.32</td>
+      <td>Eolo46</td>
+    </tr>
+    <tr>
+      <th>2</th>
+      <td>34</td>
+      <td>Male</td>
+      <td>174</td>
+      <td>Primitive Blade</td>
+      <td>2.46</td>
+      <td>Assastnya25</td>
+    </tr>
+    <tr>
+      <th>3</th>
+      <td>21</td>
+      <td>Male</td>
+      <td>92</td>
+      <td>Final Critic</td>
+      <td>1.36</td>
+      <td>Pheusrical25</td>
+    </tr>
+    <tr>
+      <th>4</th>
+      <td>23</td>
+      <td>Male</td>
+      <td>63</td>
+      <td>Stormfury Mace</td>
+      <td>1.27</td>
+      <td>Aela59</td>
+    </tr>
+  </tbody>
+</table>
+</div>
+
+
+
+
+```python
+male_Total = male_Count_df["Gender"].count()
+male_Total
+```
+
+
+
+
+    633
+
+
+
+
+```python
+female_Count_df = data_file_pd.loc[data_file_pd["Gender"] == "Female"]
+female_Count_df.head()
+```
+
+
+
+
+<div>
+<style>
+    .dataframe thead tr:only-child th {
+        text-align: right;
+    }
+
+    .dataframe thead th {
+        text-align: left;
+    }
+
+    .dataframe tbody tr th {
+        vertical-align: top;
+    }
+</style>
+<table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th></th>
+      <th>Age</th>
+      <th>Gender</th>
+      <th>Item ID</th>
+      <th>Item Name</th>
+      <th>Price</th>
+      <th>SN</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>7</th>
+      <td>29</td>
+      <td>Female</td>
+      <td>169</td>
+      <td>Interrogator, Blood Blade of the Queen</td>
+      <td>3.32</td>
+      <td>Iathenudil29</td>
+    </tr>
+    <tr>
+      <th>16</th>
+      <td>22</td>
+      <td>Female</td>
+      <td>123</td>
+      <td>Twilight's Carver</td>
+      <td>1.14</td>
+      <td>Sundista85</td>
+    </tr>
+    <tr>
+      <th>17</th>
+      <td>22</td>
+      <td>Female</td>
+      <td>59</td>
+      <td>Lightning, Etcher of the King</td>
+      <td>1.65</td>
+      <td>Aenarap34</td>
+    </tr>
+    <tr>
+      <th>22</th>
+      <td>11</td>
+      <td>Female</td>
+      <td>11</td>
+      <td>Brimstone</td>
+      <td>2.52</td>
+      <td>Deural48</td>
+    </tr>
+    <tr>
+      <th>29</th>
+      <td>16</td>
+      <td>Female</td>
+      <td>45</td>
+      <td>Glinting Glass Edge</td>
+      <td>2.46</td>
+      <td>Phaedai25</td>
+    </tr>
+  </tbody>
+</table>
+</div>
+
+
+
+
+```python
+female_Total = female_Count_df["Gender"].count()
+female_Total
+```
+
+
+
+
+    136
+
+
+
+
+```python
+Other_df = data_file_pd.loc[data_file_pd["Gender"] == "Other / Non-Disclosed"]
+Other_df.head()
+```
+
+
+
+
+<div>
+<style>
+    .dataframe thead tr:only-child th {
+        text-align: right;
+    }
+
+    .dataframe thead th {
+        text-align: left;
+    }
+
+    .dataframe tbody tr th {
+        vertical-align: top;
+    }
+</style>
+<table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th></th>
+      <th>Age</th>
+      <th>Gender</th>
+      <th>Item ID</th>
+      <th>Item Name</th>
+      <th>Price</th>
+      <th>SN</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>177</th>
+      <td>34</td>
+      <td>Other / Non-Disclosed</td>
+      <td>155</td>
+      <td>War-Forged Gold Deflector</td>
+      <td>3.73</td>
+      <td>Assassa38</td>
+    </tr>
+    <tr>
+      <th>209</th>
+      <td>33</td>
+      <td>Other / Non-Disclosed</td>
+      <td>157</td>
+      <td>Spada, Etcher of Hatred</td>
+      <td>2.21</td>
+      <td>Frichistasta59</td>
+    </tr>
+    <tr>
+      <th>244</th>
+      <td>21</td>
+      <td>Other / Non-Disclosed</td>
+      <td>183</td>
+      <td>Dragon's Greatsword</td>
+      <td>2.36</td>
+      <td>Tyaerith73</td>
+    </tr>
+    <tr>
+      <th>267</th>
+      <td>33</td>
+      <td>Other / Non-Disclosed</td>
+      <td>65</td>
+      <td>Conqueror Adamantite Mace</td>
+      <td>1.96</td>
+      <td>Frichistasta59</td>
+    </tr>
+    <tr>
+      <th>276</th>
+      <td>12</td>
+      <td>Other / Non-Disclosed</td>
+      <td>128</td>
+      <td>Blazeguard, Reach of Eternity</td>
+      <td>4.00</td>
+      <td>Aillycal84</td>
+    </tr>
+  </tbody>
+</table>
+</div>
+
+
+
+
+```python
+other_Total = Other_df["Gender"].count()
+other_Total
+```
+
+
+
+
+    11
+
+
+
+
+```python
+percent_Male = male_Total / gender_Total
+percent_Male
+```
+
+
+
+
+    0.81153846153846154
+
+
+
+
+```python
+percent_Female = female_Total / gender_Total
+percent_Female
+```
+
+
+
+
+    0.17435897435897435
+
+
+
+
+```python
+percent_Other = other_Total / gender_Total
+percent_Other
+```
+
+
+
+
+    0.014102564102564103
+
+
+
+
+```python
+
+```
+
+
+```python
+gender_group = data_file_pd.groupby('Gender', as_index=True).agg({'SN': pd.Series.nunique})
+gender_group['Percentage'] = gender_group['SN'] / total_Players * 100
+gender_group.columns = ['Total Count','Percentage']
+gender_group = gender_group[['Percentage','Total Count']]
+
+gender_group.round({'Percentage':2})
+```
+
+
+
+
+<div>
+<style>
+    .dataframe thead tr:only-child th {
+        text-align: right;
+    }
+
+    .dataframe thead th {
+        text-align: left;
+    }
+
+    .dataframe tbody tr th {
+        vertical-align: top;
+    }
+</style>
+<table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th></th>
+      <th>Percentage</th>
+      <th>Total Count</th>
+    </tr>
+    <tr>
+      <th>Gender</th>
+      <th></th>
+      <th></th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>Female</th>
+      <td>17.45</td>
+      <td>100</td>
+    </tr>
+    <tr>
+      <th>Male</th>
+      <td>81.15</td>
+      <td>465</td>
+    </tr>
+    <tr>
+      <th>Other / Non-Disclosed</th>
+      <td>1.40</td>
+      <td>8</td>
+    </tr>
+  </tbody>
+</table>
+</div>
+
+
+
+
+```python
+
+```
